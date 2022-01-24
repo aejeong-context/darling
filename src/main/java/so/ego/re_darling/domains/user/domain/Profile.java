@@ -1,9 +1,6 @@
 package so.ego.re_darling.domains.user.domain;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import so.ego.re_darling.domains.BaseTimeEntity;
 
 import javax.persistence.*;
@@ -19,7 +16,8 @@ public class Profile extends BaseTimeEntity {
     private Long id;
     private String path;
 
-
-
-
+    @Builder
+    public Profile(String path) {
+        this.path = path;
+    }
 }
