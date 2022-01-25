@@ -1,14 +1,12 @@
 package so.ego.re_darling.domains.user.domain;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import so.ego.re_darling.domains.BaseTimeEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "couple")
@@ -20,7 +18,6 @@ public class Couple extends BaseTimeEntity {
 
   private String coupleToken;
   private LocalDateTime firstDay;
-
 
   @Builder
   public Couple(String coupleToken, LocalDateTime firstDay) {

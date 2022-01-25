@@ -41,4 +41,13 @@ public class User extends BaseTimeEntity {
     this.birthday = birthday;
     this.couple = couple;
   }
+
+  public void updatePushToken(String pushToken){
+    this.pushToken = pushToken;
+  }
+  public void updateCouple(Couple couple){
+    this.couple = couple;
+  }
+
+
 }

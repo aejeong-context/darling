@@ -14,14 +14,11 @@ import java.time.LocalDateTime;
 public class UserRegisterService {
 
   private final UserRepository userRepository;
-  private final CoupleResisterService coupleResisterService;
 
   public UserRegisterResponse addUser(UserRegisterRequest userRegisterRequest) {
-    Couple couple = coupleResisterService.addCouple();
     User user =
         userRepository.save(
             User.builder()
-                .couple(couple)
                 .socialToken(userRegisterRequest.getSocialToken())
                 .nickname("미설정")
                 .birthday(LocalDateTime.now())
