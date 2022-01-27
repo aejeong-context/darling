@@ -20,3 +20,72 @@ include::{snippets}/user-create/http-request.adoc[]
 ==== HTTP response
 
 include::{snippets}/user-create/http-response.adoc[]
+
+
+[[resources-post-create]]
+=== User 단일 조회
+
+==== Request Fields
+
+include::{snippets}/user-find-check/path-parameters.adoc[]
+
+==== Response Fields
+
+include::{snippets}/user-find-check/response-fields.adoc[]
+
+
+==== HTTP request
+
+include::{snippets}/user-find-check/http-request.adoc[]
+
+==== HTTP response
+
+include::{snippets}/user-find-check/http-response.adoc[]
+
+
+[[resources-post-create]]
+=== User 로그인
+
+==== Request Fields
+
+include::{snippets}/user-login/request-fields.adoc[]
+
+
+==== Response Fields
+
+include::{snippets}/user-login/response-fields.adoc[]
+
+
+==== HTTP request
+
+include::{snippets}/user-login/http-request.adoc[]
+
+
+==== HTTP response
+
+include::{snippets}/user-login/http-response.adoc[]
+
+
+[[resources-post-create]]
+=== User 연결
+
+==== Request Fields
+
+include::{snippets}/user-connect/request-fields.adoc[]
+
+
+==== HTTP request
+
+include::{snippets}/user-connect/http-request.adoc[]
+
+==== HTTP response
+
+include::{snippets}/user-connect/http-response.adoc[]
+
+
+
+
+
+
+
+

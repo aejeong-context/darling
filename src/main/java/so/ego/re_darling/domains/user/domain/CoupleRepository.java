@@ -7,4 +7,6 @@ public interface CoupleRepository extends JpaRepository<Couple,Long> {
 
     @Query("select count(c) from Couple c where c.coupleToken = :coupleToken")
     int findByTokenCheck(String coupleToken);
+
+    Couple findByCoupleToken(String coupleToken);
 }

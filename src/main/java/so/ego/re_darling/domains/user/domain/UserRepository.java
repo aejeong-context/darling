@@ -10,4 +10,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u where u.socialToken = :socialToken")
     User findByToken(String socialToken);
+
+    @Query("select u from User u where u.couple.coupleToken = :coupleToken and u.id <> :userId")
+    User findByPartner(String coupleToken, Long userId);
 }

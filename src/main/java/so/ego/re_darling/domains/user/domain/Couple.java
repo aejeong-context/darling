@@ -24,4 +24,8 @@ public class Couple extends BaseTimeEntity {
     this.coupleToken = coupleToken;
     this.firstDay = firstDay;
   }
+
+  public void updateCoupleToken(String coupleToken) {
+    this.coupleToken = coupleToken;
+  }
 }
