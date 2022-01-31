@@ -16,6 +16,10 @@ public class Profile extends BaseTimeEntity {
     private Long id;
     private String path;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Builder
     public Profile(String path) {
         this.path = path;
