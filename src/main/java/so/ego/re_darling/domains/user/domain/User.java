@@ -48,6 +48,9 @@ public class User extends BaseTimeEntity {
   public void updateCouple(Couple couple){
     this.couple = couple;
   }
+  public void updateBirthday(LocalDateTime birthday){ this.birthday = birthday;}
+  public void updateNickname(String nickname){this.nickname = nickname;}
+  public void updateStatusMessage(String statusMessage){this.statusMessage = statusMessage;}
 
 
 }

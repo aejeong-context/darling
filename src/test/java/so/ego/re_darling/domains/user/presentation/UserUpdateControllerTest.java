@@ -1,5 +1,6 @@
 package so.ego.re_darling.domains.user.presentation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,8 +16,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import so.ego.re_darling.domains.user.application.UserRegisterService;
 import so.ego.re_darling.domains.user.application.UserUpdateService;
-import so.ego.re_darling.domains.user.application.dto.UserConnectRequest;
-import so.ego.re_darling.domains.user.application.dto.UserRegisterResponse;
+import so.ego.re_darling.domains.user.application.dto.*;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,6 +38,8 @@ class UserUpdateControllerTest {
   @MockBean private UserUpdateService userUpdateService;
   @MockBean private UserRegisterService userRegisterService;
 
+  @Autowired protected ObjectMapper objectMapper;
+
   @BeforeEach
   public void setUp(
       WebApplicationContext webApplicationContext,
@@ -47,20 +51,83 @@ class UserUpdateControllerTest {
   }
 
   @Test
-  void connectUser() throws Exception{
-    final UserConnectRequest userConnectRequest = UserConnectRequest.builder().coupleCode("AEJEONG").socialToken("abc").build();
+  void connectUser() throws Exception {
+    final UserConnectRequest userConnectRequest =
+        UserConnectRequest.builder().coupleCode("AEJEONG").socialToken("abc").build();
     final UserRegisterResponse user = UserRegisterResponse.builder().id(1L).build();
     final UserRegisterResponse partner = UserRegisterResponse.builder().id(2L).build();
-
 
     when(userRegisterService.addUser(any())).thenReturn(user);
     when(userRegisterService.addUser(any())).thenReturn(partner);
 
     when(userUpdateService.connectUser(userConnectRequest)).thenReturn(ResponseEntity.ok().build());
 
-    mockMvc.perform(put("/couple/connect").content("{\"coupleCode\":\"AEJEONG\",\"socialToken\":\"abc\"}").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andDo(
-            document("user-connect",requestFields(fieldWithPath("coupleCode").description("커플코드"),fieldWithPath("socialToken").description("소셜 토큰")))
-    );
+    mockMvc
+        .perform(
+            put("/couple/connect")
+                .content("{\"coupleCode\":\"AEJEONG\",\"socialToken\":\"abc\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(
+            document(
+                "user-connect",
+                requestFields(
+                    fieldWithPath("coupleCode").description("커플코드"),
+                    fieldWithPath("socialToken").description("소셜 토큰"))));
   }
 
+  @Test
+  void updateBirthday() throws Exception {
+    final UserBirthdayUpdateRequest userBirthdayUpdateRequest =
+        UserBirthdayUpdateRequest.builder()
+            .birthDay(LocalDateTime.now())
+            .socialToken("abc")
+            .build();
+    this.mockMvc
+        .perform(
+            put("/user/birthday")
+                .content(this.objectMapper.writeValueAsString(userBirthdayUpdateRequest))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(
+            document(
+                "user-update-birthday",
+                requestFields(
+                    fieldWithPath("birthDay").description("생일날짜"),
+                    fieldWithPath("socialToken").description("소셜 토큰"))));
+  }
+
+  @Test
+  void updateNickname() throws Exception {
+    final UserNickNameUpdateRequest userNickNameUpdateRequest =
+        UserNickNameUpdateRequest.builder().nickname("애정").socialToken("abc").build();
+    this.mockMvc
+        .perform(
+            put("/user/nickname")
+                .content(this.objectMapper.writeValueAsString(userNickNameUpdateRequest))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(
+            document("user-update-nickName",
+                requestFields(
+                    fieldWithPath("nickname").description("애칭"),
+                    fieldWithPath("socialToken").description("소셜 토큰"))));
+  }
+
+  @Test
+  void updateStatusMessage() throws Exception {
+    final UserMessageUpdateRequest userMessageUpdateRequest =
+            UserMessageUpdateRequest.builder().say("행복하자!").socialToken("abc").build();
+    this.mockMvc
+            .perform(
+                    put("/user/nickname")
+                            .content(this.objectMapper.writeValueAsString(userMessageUpdateRequest))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(
+                    document("user-update-message",
+                            requestFields(
+                                    fieldWithPath("say").description("상태 메시지"),
+                                    fieldWithPath("socialToken").description("소셜 토큰"))));
+  }
 }

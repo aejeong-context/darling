@@ -83,9 +83,42 @@ include::{snippets}/user-connect/http-request.adoc[]
 include::{snippets}/user-connect/http-response.adoc[]
 
 
+[[resources-post-create]]
+=== User Update (생일)
+
+==== Request Fields
+include::{snippets}/user-update-birthday/request-fields.adoc[]
+
+==== HTTP request
+include::{snippets}/user-update-birthday/http-request.adoc[]
+
+==== HTTP response
+include::{snippets}/user-update-birthday/http-response.adoc[]
 
 
+[[resources-post-create]]
+=== User Update (애칭)
+
+==== Request Fields
+include::{snippets}/user-update-nickName/request-fields.adoc[]
+
+==== HTTP request
+include::{snippets}/user-update-nickName/http-request.adoc[]
+
+==== HTTP response
+include::{snippets}/user-update-nickName/http-response.adoc[]
 
 
+[[resources-post-create]]
+=== User Update (상태메시지)
+
+==== Request Fields
+include::{snippets}/user-update-message/request-fields.adoc[]
+
+==== HTTP request
+include::{snippets}/user-update-message/http-request.adoc[]
+
+==== HTTP response
+include::{snippets}/user-update-message/http-response.adoc[]
 
 
