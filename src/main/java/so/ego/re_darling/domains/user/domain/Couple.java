@@ -4,6 +4,7 @@ import lombok.*;
 import so.ego.re_darling.domains.BaseTimeEntity;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -27,5 +28,9 @@ public class Couple extends BaseTimeEntity {
 
   public void updateCoupleToken(String coupleToken) {
     this.coupleToken = coupleToken;
+  }
+
+  public void updateFirstDay(LocalDateTime firstDay) {
+    this.firstDay = firstDay;
   }
 }
