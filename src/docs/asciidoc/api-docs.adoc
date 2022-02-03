@@ -23,7 +23,7 @@ include::{snippets}/user-create/http-response.adoc[]
 
 
 [[resources-post-create]]
-=== User 단일 조회
+=== User 단일 조회 (체크)
 
 ==== Request Fields
 
@@ -121,8 +121,45 @@ include::{snippets}/user-update-message/http-request.adoc[]
 ==== HTTP response
 include::{snippets}/user-update-message/http-response.adoc[]
 
+
+[[resources-post]]
+== Couple
+
 [[resources-post-create]]
-=== User Delete
+=== Couple 조회
+
+
+==== Request Fields
+include::{snippets}/couple-find/path-parameters.adoc[]
+
+==== HTTP request
+include::{snippets}/couple-find/http-request.adoc[]
+
+==== HTTP response
+include::{snippets}/couple-find/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/couple-find/response-fields.adoc[]
+
+[[resources-post-create]]
+=== Couple 단일 조회 (체크)
+
+==== Request Fields
+include::{snippets}/couple-find-check/path-parameters.adoc[]
+
+==== HTTP request
+include::{snippets}/couple-find-check/http-request.adoc[]
+
+==== HTTP response
+include::{snippets}/couple-find-check/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/couple-find-check/response-fields.adoc[]
+
+
+
+[[resources-post-create]]
+=== Couple 삭제
 
 ==== Request Fields
 include::{snippets}/user-delete/path-parameters.adoc[]
@@ -132,3 +169,4 @@ include::{snippets}/user-delete/http-request.adoc[]
 
 ==== HTTP response
 include::{snippets}/user-delete/http-response.adoc[]
+

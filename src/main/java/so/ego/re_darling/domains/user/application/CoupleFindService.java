@@ -2,6 +2,7 @@ package so.ego.re_darling.domains.user.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import so.ego.re_darling.domains.user.application.dto.CoupleCheckResponse;
 import so.ego.re_darling.domains.user.application.dto.CoupleFindResponse;
 import so.ego.re_darling.domains.user.domain.*;
 
@@ -42,5 +43,11 @@ public class CoupleFindService {
         .user1_profile_path(profile1.getPath())
         .user2_profile_path(profile2.getPath())
         .build();
+  }
+
+  public CoupleCheckResponse coupleCheck(String socialToken) {
+    User user = userRepository.findByToken(socialToken);
+    int coupleUserCount = userRepository.countByCoupleId(user.getCouple().getId());
+    return CoupleCheckResponse.builder().result((coupleUserCount == 1) ? false : true).build();
   }
 }

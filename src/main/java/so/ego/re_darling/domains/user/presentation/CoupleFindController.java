@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import so.ego.re_darling.domains.user.application.CoupleFindService;
+import so.ego.re_darling.domains.user.application.dto.CoupleCheckResponse;
+import so.ego.re_darling.domains.user.application.dto.CoupleDdayResponse;
 import so.ego.re_darling.domains.user.application.dto.CoupleFindResponse;
 
 @RequiredArgsConstructor
@@ -19,5 +21,10 @@ public class CoupleFindController {
   public CoupleFindResponse findCouple(
       @PathVariable String coupleToken, @PathVariable String socialToken) {
     return coupleFindService.findCouple(coupleToken, socialToken);
+  }
+
+  @GetMapping("/couple/check/{socialToken}")
+  public CoupleCheckResponse coupleConnectCheck(@PathVariable String socialToken) {
+    return coupleFindService.coupleCheck(socialToken);
   }
 }

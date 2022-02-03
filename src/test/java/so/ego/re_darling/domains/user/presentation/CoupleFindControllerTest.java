@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import so.ego.re_darling.domains.user.application.CoupleFindService;
 import so.ego.re_darling.domains.user.application.UserRegisterService;
+import so.ego.re_darling.domains.user.application.dto.CoupleCheckResponse;
 import so.ego.re_darling.domains.user.application.dto.CoupleFindResponse;
 import so.ego.re_darling.domains.user.application.dto.UserRegisterRequest;
 import so.ego.re_darling.domains.user.application.dto.UserRegisterResponse;
@@ -91,5 +92,22 @@ class CoupleFindControllerTest {
                     fieldWithPath("user2_profile_path").description("상대방 프로필 사진 url"),
                     fieldWithPath("sayMe").description("나의 상태 메시지"),
                     fieldWithPath("sayYou").description("상대방 상태 메시지"))));
+  }
+
+  @Test
+  void coupleConnectCheck() throws Exception {
+
+    final CoupleCheckResponse coupleCheckResponse =
+        CoupleCheckResponse.builder().result(true).build();
+
+    when(coupleFindService.coupleCheck("abc")).thenReturn(coupleCheckResponse);
+
+    this.mockMvc
+        .perform(get("/couple/check/{socialToken}", "abc"))
+        .andExpect(status().isOk())
+        .andDo(
+            document("couple-find-check",
+                pathParameters(parameterWithName("socialToken").description("소셜 토큰")),
+                responseFields(fieldWithPath("result").description("연결상태 유무"))));
   }
 }
