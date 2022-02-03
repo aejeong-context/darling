@@ -25,9 +25,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(RestDocumentationExtension.class)
@@ -108,7 +111,8 @@ class UserUpdateControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andDo(
-            document("user-update-nickName",
+            document(
+                "user-update-nickName",
                 requestFields(
                     fieldWithPath("nickname").description("애칭"),
                     fieldWithPath("socialToken").description("소셜 토큰"))));
@@ -117,17 +121,28 @@ class UserUpdateControllerTest {
   @Test
   void updateStatusMessage() throws Exception {
     final UserMessageUpdateRequest userMessageUpdateRequest =
-            UserMessageUpdateRequest.builder().say("행복하자!").socialToken("abc").build();
+        UserMessageUpdateRequest.builder().say("행복하자!").socialToken("abc").build();
     this.mockMvc
-            .perform(
-                    put("/user/nickname")
-                            .content(this.objectMapper.writeValueAsString(userMessageUpdateRequest))
-                            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andDo(
-                    document("user-update-message",
-                            requestFields(
-                                    fieldWithPath("say").description("상태 메시지"),
-                                    fieldWithPath("socialToken").description("소셜 토큰"))));
+        .perform(
+            put("/user/nickname")
+                .content(this.objectMapper.writeValueAsString(userMessageUpdateRequest))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(
+            document(
+                "user-update-message",
+                requestFields(
+                    fieldWithPath("say").description("상태 메시지"),
+                    fieldWithPath("socialToken").description("소셜 토큰"))));
+  }
+
+  @Test
+  void deleteInfo() throws Exception {
+    this.mockMvc
+        .perform(delete("/user/{socialToken}", "abc").accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(
+            document(
+                "user-delete", pathParameters(parameterWithName("socialToken").description("소셜 토큰"))));
   }
 }

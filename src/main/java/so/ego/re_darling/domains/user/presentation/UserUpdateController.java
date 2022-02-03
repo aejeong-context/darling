@@ -2,6 +2,8 @@ package so.ego.re_darling.domains.user.presentation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import so.ego.re_darling.domains.user.application.UserUpdateService;
@@ -36,5 +38,9 @@ public class UserUpdateController {
   @PutMapping("/user/say")
   public ResponseEntity updateStatusMessage(UserMessageUpdateRequest userMessageUpdateRequest) {
     return userUpdateService.updateStatusMessage(userMessageUpdateRequest);
+  }
+  @DeleteMapping("/user/{socialToken}")
+  public ResponseEntity deleteUser(@PathVariable String socialToken){
+    return userUpdateService.deleteUser(socialToken);
   }
 }

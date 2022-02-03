@@ -4,6 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import so.ego.re_darling.domains.coupon.domain.Coupon;
+import so.ego.re_darling.domains.coupon.domain.CouponRepository;
+import so.ego.re_darling.domains.diary.Diary;
+import so.ego.re_darling.domains.diary.DiaryRepository;
 import so.ego.re_darling.domains.user.application.dto.UserBirthdayUpdateRequest;
 import so.ego.re_darling.domains.user.application.dto.UserConnectRequest;
 import so.ego.re_darling.domains.user.application.dto.UserMessageUpdateRequest;
@@ -11,6 +15,7 @@ import so.ego.re_darling.domains.user.application.dto.UserNickNameUpdateRequest;
 import so.ego.re_darling.domains.user.domain.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -18,6 +23,11 @@ import java.util.UUID;
 public class UserUpdateService {
   private final UserRepository userRepository;
   private final CoupleRepository coupleRepository;
+
+  private final ProfileRepository profileRepository;
+  private final CouponRepository couponRepository;
+  private final DiaryRepository diaryRepository;
+
 
   @Transactional
   public ResponseEntity connectUser(UserConnectRequest userConnectRequest) throws IOException {
@@ -61,5 +71,38 @@ public class UserUpdateService {
     User user = userRepository.findByToken(userMessageUpdateRequest.getSocialToken());
     user.updateStatusMessage(userMessageUpdateRequest.getSay());
     return ResponseEntity.ok().build();
+  }
+
+  @Transactional
+  public ResponseEntity deleteUser(String socialToken) {
+    User user = userRepository.findByToken(socialToken);
+    User partner = userRepository.findByPartner(user.getCouple().getCoupleToken(), user.getId());
+
+    deleteInfo(user);
+    deleteInfo(partner);
+
+    userRepository.delete(partner);
+    userRepository.delete(user);
+    return ResponseEntity.ok().build();
+  }
+
+  public void deleteInfo(User user) {
+
+    Profile profile = profileRepository.findByUserId(user.getId());
+//    List<Push> pushList = pushRepository.findAllByUserId(user.getId());
+    List<Diary> diaryList = diaryRepository.findByCoupleId(user.getCouple().getId());
+    List<Coupon> couponList = couponRepository.findByReceiver(user.getId());
+
+    for (Diary diary : diaryList) {
+      diaryRepository.delete(diary);
+    }
+
+    for (Coupon coupon : couponList) {
+      couponRepository.delete(coupon);
+    }
+//    for (Push push : pushList) {
+//      pushRepository.delete(push);
+//    }
+    profileRepository.delete(profile);
   }
 }

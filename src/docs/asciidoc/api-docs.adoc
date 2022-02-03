@@ -121,4 +121,14 @@ include::{snippets}/user-update-message/http-request.adoc[]
 ==== HTTP response
 include::{snippets}/user-update-message/http-response.adoc[]
 
+[[resources-post-create]]
+=== User Delete
 
+==== Request Fields
+include::{snippets}/user-delete/path-parameters.adoc[]
+
+==== HTTP request
+include::{snippets}/user-delete/http-request.adoc[]
+
+==== HTTP response
+include::{snippets}/user-delete/http-response.adoc[]
