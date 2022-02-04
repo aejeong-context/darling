@@ -90,7 +90,7 @@ public class CoupleFindService {
                   simpleDateFormat.format(
                       java.sql.Date.valueOf(
                           coupleFirstDay.plusDays(((countSpecialDay / 100) + i) * 100 - 1))))
-              .dayCount((int) (i * 100) - ((countSpecialDay % 100)))
+              .dayCount((i * 100) - ((countSpecialDay % 100)))
               .build());
     }
 
@@ -113,10 +113,9 @@ public class CoupleFindService {
     long countDay = ChronoUnit.YEARS.between(meetDay, LocalDate.now());
     LocalDate specialDay = meetDay.plusYears(countDay);
 
-    if (specialDay.isBefore(LocalDate.now()) || specialDay.isEqual(LocalDate.now())) {
-      specialDay = specialDay.plusDays(1);
-      countDay += 1;
-    }
+    specialDay = specialDay.plusYears(1);
+    countDay += 1;
+
     return DdayDto.builder()
         .name(countDay + "주년")
         .date(simpleDateFormat.format(specialDay))
