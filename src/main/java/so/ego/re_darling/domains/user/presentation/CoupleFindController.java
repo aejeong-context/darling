@@ -27,4 +27,10 @@ public class CoupleFindController {
   public CoupleCheckResponse coupleConnectCheck(@PathVariable String socialToken) {
     return coupleFindService.coupleCheck(socialToken);
   }
+
+  @GetMapping("/couple/dday/{coupleToken}")
+  public CoupleDdayResponse coupleDay(@PathVariable String coupleToken){
+    return coupleFindService.coupleDay(coupleToken);
+  }
+
 }
