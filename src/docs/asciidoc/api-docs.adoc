@@ -170,3 +170,23 @@ include::{snippets}/user-delete/http-request.adoc[]
 ==== HTTP response
 include::{snippets}/user-delete/http-response.adoc[]
 
+[[resources-post]]
+== Wish
+
+[[resources-post-create]]
+=== Wish 생성
+=== Wish 조회
+==== Request Fields
+include::{snippets}/wish-find-all/path-parameters.adoc[]
+
+==== HTTP request
+include::{snippets}/wish-find-all/http-request.adoc[]
+
+==== HTTP response
+include::{snippets}/wish-find-all/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/wish-find-all/response-fields.adoc[]
+
+=== Wish 수정
+=== Wish 삭제
