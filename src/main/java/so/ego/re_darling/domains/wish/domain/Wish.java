@@ -33,9 +33,10 @@ public class Wish extends BaseTimeEntity {
   private Couple couple;
 
   @Builder
-  public Wish(String content, WishStatus status, User user) {
+  public Wish(String content, WishStatus status, User user, Couple couple) {
     this.content = content;
     this.status = status;
     this.user = user;
+    this.couple = couple;
   }
 }

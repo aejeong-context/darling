@@ -175,6 +175,16 @@ include::{snippets}/user-delete/http-response.adoc[]
 
 [[resources-post-create]]
 === Wish 생성
+==== Request Fields
+include::{snippets}/wish-register/request-fields.adoc[]
+
+==== HTTP request
+include::{snippets}/wish-register/http-request.adoc[]
+
+==== HTTP response
+include::{snippets}/wish-register/http-response.adoc[]
+
+
 === Wish 조회
 ==== Request Fields
 include::{snippets}/wish-find-all/path-parameters.adoc[]
