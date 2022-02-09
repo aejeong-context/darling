@@ -27,8 +27,14 @@ public class CoupleFindService {
   SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd (E)", Locale.KOREAN);
 
   public CoupleFindResponse findCouple(String coupleToken, String socialToken) {
-    User user = userRepository.findBySocialToken(socialToken);
-    User partner = userRepository.findByPartner(user.getCouple().getCoupleToken(), user.getId());
+    User user =
+        userRepository
+            .findBySocialToken(socialToken)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid User"));
+    User partner =
+        userRepository
+            .findByPartner(user.getCouple().getCoupleToken(), user.getId())
+            .orElseThrow(() -> new IllegalArgumentException("Invalid Partner"));
 
     Background background = backgroundRepository.findByCoupleId(user.getCouple().getId());
     Profile profile1 = profileRepository.findByUserId(user.getId());
@@ -52,7 +58,10 @@ public class CoupleFindService {
   }
 
   public CoupleCheckResponse coupleCheck(String socialToken) {
-    User user = userRepository.findBySocialToken(socialToken);
+    User user =
+        userRepository
+            .findBySocialToken(socialToken)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid User"));
     int coupleUserCount = userRepository.countByCoupleId(user.getCouple().getId());
     return CoupleCheckResponse.builder().result((coupleUserCount == 1) ? false : true).build();
   }

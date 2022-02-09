@@ -19,7 +19,10 @@ public class WishRegisterService {
 
   public Long AddWish(WishResisterRequest wishResisterRequest) {
 
-    User user = userRepository.findBySocialToken(wishResisterRequest.getSocialToken());
+    User user =
+        userRepository
+            .findBySocialToken(wishResisterRequest.getSocialToken())
+            .orElseThrow(() -> new IllegalArgumentException("Invalid User"));
     Wish wish =
         wishRepository.save(
             Wish.builder()
