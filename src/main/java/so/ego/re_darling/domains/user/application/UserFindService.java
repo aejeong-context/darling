@@ -19,15 +19,18 @@ public class UserFindService {
 
   public UserFindResponse findUser(String socialToken) {
     int userFindCount = userRepository.findByTokenCount(socialToken);
-    return UserFindResponse.builder().result((userFindCount == 0) ? false : true).build();
+    return UserFindResponse.builder().result(userFindCount != 0).build();
   }
 
   @Transactional
   public UserLoginResponse loginUser(UserLoginRequest userLoginRequest) {
-    User user = userRepository.findByToken(userLoginRequest.getSocialToken());
-    if(user.getCouple() == null){
-     Couple couple =  coupleResisterService.addCouple();
-     user.updateCouple(couple);
+    User user =
+        userRepository
+            .findBySocialToken(userLoginRequest.getSocialToken())
+            .orElseThrow(() -> new IllegalArgumentException("Invalid User"));
+    if (user.getCouple() == null) {
+      Couple couple = coupleResisterService.addCouple();
+      user.updateCouple(couple);
     }
     user.updatePushToken(userLoginRequest.getPushToken());
     return UserLoginResponse.builder()

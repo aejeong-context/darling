@@ -198,5 +198,15 @@ include::{snippets}/wish-find-all/http-response.adoc[]
 ==== Response Fields
 include::{snippets}/wish-find-all/response-fields.adoc[]
 
-=== Wish 수정
+=== Wish 수정 (Status)
+==== Request Fields
+include::{snippets}/wish-update-status/path-parameters.adoc[]
+
+==== HTTP request
+include::{snippets}/wish-update-status/http-request.adoc[]
+
+==== HTTP response
+include::{snippets}/wish-update-status/http-response.adoc[]
+
+
 === Wish 삭제

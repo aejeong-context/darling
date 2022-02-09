@@ -39,4 +39,9 @@ public class Wish extends BaseTimeEntity {
     this.user = user;
     this.couple = couple;
   }
+
+  public void updateStatus(LocalDateTime complete_date, WishStatus status) {
+    this.completeDate = complete_date;
+    this.status = status;
+  }
 }
