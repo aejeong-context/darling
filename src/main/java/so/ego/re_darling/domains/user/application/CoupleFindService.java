@@ -27,7 +27,7 @@ public class CoupleFindService {
   SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd (E)", Locale.KOREAN);
 
   public CoupleFindResponse findCouple(String coupleToken, String socialToken) {
-    User user = userRepository.findByToken(socialToken);
+    User user = userRepository.findBySocialToken(socialToken);
     User partner = userRepository.findByPartner(user.getCouple().getCoupleToken(), user.getId());
 
     Background background = backgroundRepository.findByCoupleId(user.getCouple().getId());
@@ -52,7 +52,7 @@ public class CoupleFindService {
   }
 
   public CoupleCheckResponse coupleCheck(String socialToken) {
-    User user = userRepository.findByToken(socialToken);
+    User user = userRepository.findBySocialToken(socialToken);
     int coupleUserCount = userRepository.countByCoupleId(user.getCouple().getId());
     return CoupleCheckResponse.builder().result((coupleUserCount == 1) ? false : true).build();
   }
