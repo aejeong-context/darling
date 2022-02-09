@@ -2,6 +2,7 @@ package so.ego.re_darling.domains.wish.domain;
 
 import lombok.*;
 import so.ego.re_darling.domains.BaseTimeEntity;
+import so.ego.re_darling.domains.user.domain.Couple;
 import so.ego.re_darling.domains.user.domain.User;
 
 import javax.persistence.*;
@@ -23,9 +24,13 @@ public class Wish extends BaseTimeEntity {
   @Enumerated(value = EnumType.STRING)
   private WishStatus status;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(name = "user_id")
   private User user;
+
+  @ManyToOne
+  @JoinColumn(name = "couple_id")
+  private Couple couple;
 
   @Builder
   public Wish(String content, WishStatus status, User user) {
