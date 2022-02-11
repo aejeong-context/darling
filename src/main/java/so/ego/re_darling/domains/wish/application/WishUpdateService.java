@@ -21,7 +21,7 @@ public class WishUpdateService {
   private final UserRepository userRepository;
 
   @Transactional
-  public ResponseEntity<String> stateUpdate(String socialToken, Long wishListId) {
+  public void stateUpdate(String socialToken, Long wishListId) {
 
     userRepository
         .findBySocialToken(socialToken)
@@ -34,11 +34,11 @@ public class WishUpdateService {
 
     wish.updateStatus(LocalDateTime.now(), WishStatus.COMPLETE);
 
-    return new ResponseEntity<>("The wish update is complete.", HttpStatus.OK);
+
   }
 
   @Transactional
-  public ResponseEntity<String> delWish(Long wishListId) {
+  public void delWish(Long wishListId) {
 
     Wish wish =
         wishRepository
@@ -46,10 +46,10 @@ public class WishUpdateService {
             .orElseThrow(() -> new IllegalArgumentException("Invalid wish Index"));
     wish.updateStatus(WishStatus.DELETE);
 
-    return new ResponseEntity<>("The wish has been deleted.", HttpStatus.OK);
   }
 
-  public ResponseEntity<String> modifyContent(WishListRequest wishListRequest) {
+  @Transactional
+  public void modifyContent(WishListRequest wishListRequest) {
     Wish wishList =
         wishRepository
             .findById(wishListRequest.getWishId())
@@ -57,8 +57,6 @@ public class WishUpdateService {
 
     wishList.updateContent(wishList.getContent());
 
-    return new ResponseEntity<>(
-        "The contents of Index [ " + wishListRequest.getWishId() + " ] have been updated.",
-        HttpStatus.OK);
+
   }
 }

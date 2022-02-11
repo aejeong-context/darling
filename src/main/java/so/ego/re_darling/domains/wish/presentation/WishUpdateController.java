@@ -19,17 +19,23 @@ public class WishUpdateController {
   private final WishUpdateService wishUpdateService;
 
   @PutMapping("/wishlist/{socialToken}/{wishListId}")
-  public ResponseEntity<String> completeStatus(@PathVariable String socialToken, @PathVariable Long wishListId) {
-    return wishUpdateService.stateUpdate(socialToken, wishListId);
+  public ResponseEntity<String> completeStatus(
+      @PathVariable String socialToken, @PathVariable Long wishListId) {
+    wishUpdateService.stateUpdate(socialToken, wishListId);
+    return new ResponseEntity<>("The wish update is complete.", HttpStatus.OK);
   }
 
   @PutMapping("/wishlist/delete/{wishListId}")
   public ResponseEntity<String> delStatus(@PathVariable Long wishListId) {
-    return wishUpdateService.delWish(wishListId);
+    wishUpdateService.delWish(wishListId);
+    return new ResponseEntity<>("The wish has been deleted.", HttpStatus.OK);
   }
 
   @PutMapping("/wish")
   public ResponseEntity<String> modifyContent(@RequestBody WishListRequest wishListRequest) {
-    return wishUpdateService.modifyContent(wishListRequest);
+    wishUpdateService.modifyContent(wishListRequest);
+    return new ResponseEntity<>(
+        "The contents of Index [ " + wishListRequest.getWishId() + " ] have been updated.",
+        HttpStatus.OK);
   }
 }
