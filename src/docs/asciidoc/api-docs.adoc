@@ -232,3 +232,16 @@ include::{snippets}/wish-status-delete/http-request.adoc[]
 include::{snippets}/wish-status-delete/http-response.adoc[]
 
 
+[[resources-post]]
+== Coupon
+
+[[resources-post-create]]
+=== Coupon 생성
+
+==== Request Fields
+include::{snippets}/coupon-add/request-fields.adoc[]
+==== HTTP request
+include::{snippets}/coupon-add/http-request.adoc[]
+==== HTTP response
+include::{snippets}/coupon-add/http-response.adoc[]
+
