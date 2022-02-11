@@ -20,4 +20,10 @@ public class WishUpdateController {
   public ResponseEntity<String> stateUpdate(@PathVariable String socialToken, @PathVariable Long wishListId) {
     return wishUpdateService.stateUpdate(socialToken, wishListId);
   }
+
+  @PutMapping("/wishlist/delete/{wishListId}")
+  public ResponseEntity<String> delWish(@PathVariable Long wishListId) {
+    return wishUpdateService.delWish(wishListId);
+  }
+
 }

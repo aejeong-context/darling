@@ -200,13 +200,22 @@ include::{snippets}/wish-find-all/response-fields.adoc[]
 
 === Wish 수정 (Status)
 ==== Request Fields
-include::{snippets}/wish-update-status/path-parameters.adoc[]
+include::{snippets}/wish-status-complete/path-parameters.adoc[]
 
 ==== HTTP request
-include::{snippets}/wish-update-status/http-request.adoc[]
+include::{snippets}/wish-status-complete/http-request.adoc[]
 
 ==== HTTP response
-include::{snippets}/wish-update-status/http-response.adoc[]
+include::{snippets}/wish-status-complete/http-response.adoc[]
 
 
-=== Wish 삭제
+=== Wish 삭제 (Status)
+==== Request Fields
+include::{snippets}/wish-status-delete/path-parameters.adoc[]
+
+
+==== HTTP request
+include::{snippets}/wish-status-delete/http-request.adoc[]
+
+==== HTTP response
+include::{snippets}/wish-status-delete/http-response.adoc[]

@@ -35,4 +35,18 @@ public class WishUpdateService {
 
     return new ResponseEntity<>("The wish update is complete.", HttpStatus.OK);
   }
+
+  @Transactional
+  public ResponseEntity<String> delWish(Long wishListId) {
+
+    Wish wish =
+        wishRepository
+            .findById(wishListId)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid wish Index"));
+    wish.updateStatus(WishStatus.DELETE);
+
+    return new ResponseEntity<>("The wish has been deleted.", HttpStatus.OK);
+  }
+
+
 }

@@ -1,5 +1,6 @@
 package so.ego.re_darling.domains.wish.presentation;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -31,10 +32,14 @@ class WishUpdateControllerTest {
 
   @Autowired private WishRepository wishRepository;
 
-  @Test
-  void updateStatus() throws Exception {
+  @BeforeEach
+  void setUp() {
     userRepository.save(User.builder().socialToken("abc").build());
     wishRepository.save(Wish.builder().content("바다가기").status(WishStatus.INCOMPLETE).build());
+  }
+
+  @Test
+  void updateComplete() throws Exception {
 
     this.mockMvc
         .perform(
@@ -44,9 +49,21 @@ class WishUpdateControllerTest {
         .andDo(print())
         .andDo(
             document(
-                "wish-update-status",
+                "wish-status-complete",
                 pathParameters(
                     parameterWithName("socialToken").description("소셜 토큰"),
                     parameterWithName("wishListId").description("변경할 위시 리스트 Index"))));
+  }
+
+  @Test
+  void deleteStatus() throws Exception {
+    this.mockMvc
+        .perform(put("/wishlist/delete/{wishListId}", "1").accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(
+            document(
+                "wish-status-delete",
+                pathParameters(parameterWithName("wishListId").description("삭제할 Wish Index"))));
   }
 }
