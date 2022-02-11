@@ -48,4 +48,8 @@ public class Wish extends BaseTimeEntity {
   public void updateStatus(WishStatus wishStatus) {
     this.status = wishStatus;
   }
+
+  public void updateContent(String content) {
+    this.content = content;
+  }
 }

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import so.ego.re_darling.domains.user.domain.UserRepository;
+import so.ego.re_darling.domains.wish.application.dto.WishListRequest;
 import so.ego.re_darling.domains.wish.domain.Wish;
 import so.ego.re_darling.domains.wish.domain.WishRepository;
 import so.ego.re_darling.domains.wish.domain.WishStatus;
@@ -48,5 +49,16 @@ public class WishUpdateService {
     return new ResponseEntity<>("The wish has been deleted.", HttpStatus.OK);
   }
 
+  public ResponseEntity<String> modifyContent(WishListRequest wishListRequest) {
+    Wish wishList =
+        wishRepository
+            .findById(wishListRequest.getWishId())
+            .orElseThrow(() -> new IllegalArgumentException("Invalid Wish Index"));
 
+    wishList.updateContent(wishList.getContent());
+
+    return new ResponseEntity<>(
+        "The contents of Index [ " + wishListRequest.getWishId() + " ] have been updated.",
+        HttpStatus.OK);
+  }
 }
