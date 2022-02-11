@@ -208,6 +208,17 @@ include::{snippets}/wish-status-complete/http-request.adoc[]
 ==== HTTP response
 include::{snippets}/wish-status-complete/http-response.adoc[]
 
+=== Wish 수정 (content)
+==== Request Fields
+include::{snippets}/wish-content-update/request-fields.adoc[]
+
+==== HTTP request
+include::{snippets}/wish-content-update/http-request.adoc[]
+
+==== HTTP response
+include::{snippets}/wish-content-update/http-response.adoc[]
+
+
 
 === Wish 삭제 (Status)
 ==== Request Fields
@@ -219,3 +230,5 @@ include::{snippets}/wish-status-delete/http-request.adoc[]
 
 ==== HTTP response
 include::{snippets}/wish-status-delete/http-response.adoc[]
+
+
