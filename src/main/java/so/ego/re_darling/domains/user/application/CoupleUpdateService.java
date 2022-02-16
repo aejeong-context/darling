@@ -18,7 +18,11 @@ public class CoupleUpdateService {
   @Transactional
   public ResponseEntity updateFirstDay(CoupleFirstDayRequest coupleFirstDayRequest) {
 
-    Couple couple = coupleRepository.findByCoupleToken(coupleFirstDayRequest.getCoupleToken());
+    Couple couple =
+        coupleRepository
+            .findByCoupleToken(coupleFirstDayRequest.getCoupleToken())
+            .orElseThrow(() -> new IllegalArgumentException("Invalid CoupleToken"));
+    ;
     couple.updateFirstDay(coupleFirstDayRequest.getSpecialDay());
 
     return ResponseEntity.ok().build();

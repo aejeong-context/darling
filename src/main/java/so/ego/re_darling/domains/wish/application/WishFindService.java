@@ -25,7 +25,11 @@ public class WishFindService {
     List<WishListFindAllResponse> wishListFindAllResponseList = new ArrayList<>();
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 E요일", Locale.KOREAN);
 
-    Couple couple = coupleRepository.findByCoupleToken(coupleToken);
+    Couple couple =
+        coupleRepository
+            .findByCoupleToken(coupleToken)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid CoupleToken"));
+    ;
 
     List<Wish> wishList = wishRepository.findByCoupleIdOrderByStatusDesc(couple.getId());
 

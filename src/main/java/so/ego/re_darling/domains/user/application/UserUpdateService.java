@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import so.ego.re_darling.domains.coupon.domain.Coupon;
 import so.ego.re_darling.domains.coupon.domain.CouponRepository;
-import so.ego.re_darling.domains.diary.Diary;
-import so.ego.re_darling.domains.diary.DiaryRepository;
+import so.ego.re_darling.domains.diary.domain.Diary;
+import so.ego.re_darling.domains.diary.domain.DiaryRepository;
 import so.ego.re_darling.domains.user.application.dto.UserBirthdayUpdateRequest;
 import so.ego.re_darling.domains.user.application.dto.UserConnectRequest;
 import so.ego.re_darling.domains.user.application.dto.UserMessageUpdateRequest;
@@ -35,7 +35,11 @@ public class UserUpdateService {
         userRepository
             .findBySocialToken(userConnectRequest.getSocialToken())
             .orElseThrow(() -> new IllegalArgumentException("Invalid User"));
-    Couple couple = coupleRepository.findByCoupleToken(userConnectRequest.getCoupleCode());
+    Couple couple =
+        coupleRepository
+            .findByCoupleToken(userConnectRequest.getCoupleCode())
+            .orElseThrow(() -> new IllegalArgumentException("Invalid CoupleToken"));
+    ;
 
     if (couple != null) {
       user.updateCouple(couple);

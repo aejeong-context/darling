@@ -63,12 +63,16 @@ public class CoupleFindService {
             .findBySocialToken(socialToken)
             .orElseThrow(() -> new IllegalArgumentException("Invalid User"));
     int coupleUserCount = userRepository.countByCoupleId(user.getCouple().getId());
-    return CoupleCheckResponse.builder().result((coupleUserCount == 1) ? false : true).build();
+    return CoupleCheckResponse.builder().result(coupleUserCount != 1).build();
   }
 
   public CoupleDdayResponse coupleDay(String coupleToken) {
     List<DdayDto> days = new ArrayList<>();
-    Couple couple = coupleRepository.findByCoupleToken(coupleToken);
+    Couple couple =
+        coupleRepository
+            .findByCoupleToken(coupleToken)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid CoupleToken"));
+    ;
     List<User> userList = userRepository.findByCoupleId(couple.getId());
 
     User user = userList.get(0);
