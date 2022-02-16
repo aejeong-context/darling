@@ -1,4 +1,4 @@
-package so.ego.re_darling.domains.diary;
+package so.ego.re_darling.domains.diary.domain;
 
 import lombok.*;
 import so.ego.re_darling.domains.BaseTimeEntity;
