@@ -26,8 +26,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,12 +41,11 @@ class DiaryRegisterControllerTest {
   @Autowired private UserRepository userRepository;
   @Autowired private CoupleRepository coupleRepository;
 
-
   @Test
   void registerDiary() throws Exception {
-      Couple couple = coupleRepository.save(Couple.builder().coupleToken("AAAAA").build());
-      userRepository.save(User.builder().socialToken("abc").couple(couple).build());
-      userRepository.save(User.builder().socialToken("def").couple(couple).build());
+    Couple couple = coupleRepository.save(Couple.builder().coupleToken("AAAAA").build());
+    userRepository.save(User.builder().socialToken("abc").couple(couple).build());
+    userRepository.save(User.builder().socialToken("def").couple(couple).build());
 
     final DiaryRegisterRequest diaryRegisterRequest =
         DiaryRegisterRequest.builder()
@@ -64,11 +62,12 @@ class DiaryRegisterControllerTest {
         .andExpect(status().isOk())
         .andDo(
             document(
-                "diary-register",
+                "diary-add",
                 requestFields(
                     fieldWithPath("date").description("다이어리 기록할 날짜"),
                     fieldWithPath("coupleToken").description("커플 토큰"),
                     fieldWithPath("socialToken").description("소셜 토큰"),
-                    fieldWithPath("say").description("다이어리 댓글 (삭제 예정)"))));
+                    fieldWithPath("say").description("다이어리 댓글 (삭제 예정)")),
+                responseFields(fieldWithPath("diaryId").description("다이어리 Index"))));
   }
 }

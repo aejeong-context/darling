@@ -245,3 +245,20 @@ include::{snippets}/coupon-add/http-request.adoc[]
 ==== HTTP response
 include::{snippets}/coupon-add/http-response.adoc[]
 
+[[resources-post]]
+== Diary
+
+[[resources-post-create]]
+=== Diary 생성
+
+==== Request Fields
+include::{snippets}/diary-add/request-fields.adoc[]
+==== HTTP request
+include::{snippets}/diary-add/http-request.adoc[]
+==== HTTP response
+include::{snippets}/diary-add/http-response.adoc[]
+==== Response Fields
+include::{snippets}/diary-add/response-fields.adoc[]
+
+
+
