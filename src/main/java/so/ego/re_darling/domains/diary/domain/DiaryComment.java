@@ -32,4 +32,8 @@ public class DiaryComment extends BaseTimeEntity {
     this.user = user;
     this.diary = diary;
   }
+
+  public void updateComment(String comment) {
+    this.comment = comment;
+  }
 }

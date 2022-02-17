@@ -261,6 +261,15 @@ include::{snippets}/diary-add/http-response.adoc[]
 include::{snippets}/diary-add/response-fields.adoc[]
 
 [[resources-post-create]]
+=== Diary 수정 (댓글)
+==== Request Fields
+include::{snippets}/diary-comment-update/request-fields.adoc[]
+==== HTTP request
+include::{snippets}/diary-comment-update/http-request.adoc[]
+==== HTTP response
+include::{snippets}/diary-comment-update/http-response.adoc[]
+
+[[resources-post-create]]
 === Diary Place 생성
 
 ==== Request Fields
