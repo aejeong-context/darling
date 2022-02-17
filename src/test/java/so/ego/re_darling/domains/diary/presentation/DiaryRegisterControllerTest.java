@@ -2,6 +2,7 @@ package so.ego.re_darling.domains.diary.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.message.ObjectMessage;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import so.ego.re_darling.domains.diary.application.dto.DiaryPlaceRegisterRequest;
 import so.ego.re_darling.domains.diary.application.dto.DiaryRegisterRequest;
+import so.ego.re_darling.domains.diary.domain.Diary;
 import so.ego.re_darling.domains.diary.domain.DiaryRepository;
 import so.ego.re_darling.domains.user.domain.Couple;
 import so.ego.re_darling.domains.user.domain.CoupleRepository;
@@ -22,6 +25,7 @@ import so.ego.re_darling.domains.wish.domain.Wish;
 import so.ego.re_darling.domains.wish.domain.WishStatus;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -40,12 +44,18 @@ class DiaryRegisterControllerTest {
 
   @Autowired private UserRepository userRepository;
   @Autowired private CoupleRepository coupleRepository;
+  @Autowired private DiaryRepository diaryRepository;
 
-  @Test
-  void registerDiary() throws Exception {
+  @BeforeEach
+  void setup() {
     Couple couple = coupleRepository.save(Couple.builder().coupleToken("AAAAA").build());
     userRepository.save(User.builder().socialToken("abc").couple(couple).build());
     userRepository.save(User.builder().socialToken("def").couple(couple).build());
+    diaryRepository.save(Diary.builder().couple(couple).date(LocalDateTime.now()).build());
+  }
+
+  @Test
+  void registerDiary() throws Exception {
 
     final DiaryRegisterRequest diaryRegisterRequest =
         DiaryRegisterRequest.builder()
@@ -69,5 +79,30 @@ class DiaryRegisterControllerTest {
                     fieldWithPath("socialToken").description("소셜 토큰"),
                     fieldWithPath("say").description("다이어리 댓글 (삭제 예정)")),
                 responseFields(fieldWithPath("diaryId").description("다이어리 Index"))));
+  }
+
+  @Test
+  void addDiaryPlaces() throws Exception {
+    final List<DiaryPlaceRegisterRequest> diaryPlaceRegisterRequest =
+        Lists.newArrayList(
+            DiaryPlaceRegisterRequest.builder().diaryId(1L).comment("역시 이뻐").name("석촌호수").build(),
+            DiaryPlaceRegisterRequest.builder()
+                .diaryId(1L)
+                .comment("여기 맛있어")
+                .name("송리단길 맛집")
+                .build());
+    mockMvc
+        .perform(
+            post("/diary/places")
+                .content(this.objectMapper.writeValueAsString(diaryPlaceRegisterRequest))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isCreated())
+        .andDo(
+            document(
+                "diary-place-add",
+                requestFields(
+                    fieldWithPath("[].diaryId").description("다이어리 Index"),
+                    fieldWithPath("[].name").description("다이어리 장소 이름"),
+                    fieldWithPath("[].comment").description("다이어리 장소 댓글"))));
   }
 }
