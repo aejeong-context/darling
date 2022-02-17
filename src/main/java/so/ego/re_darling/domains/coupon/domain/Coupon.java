@@ -25,12 +25,12 @@ public class Coupon extends BaseTimeEntity {
   private CouponStatus status;
 
 //  @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(name = "receiver_id")
   private User receiver;
 
 //  @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(name = "sender_id")
   private User sender;
 

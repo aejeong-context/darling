@@ -23,7 +23,7 @@ public class Diary extends BaseTimeEntity {
 
   private LocalDateTime date;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(name = "couple_id")
   private Couple couple;
 
