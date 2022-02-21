@@ -1,6 +1,7 @@
 package so.ego.re_darling.domains.diary.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -8,11 +9,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import so.ego.re_darling.domains.diary.application.dto.DiaryPlaceUpdateRequest;
 import so.ego.re_darling.domains.diary.application.dto.DiaryUpdateRequest;
-import so.ego.re_darling.domains.diary.domain.Diary;
-import so.ego.re_darling.domains.diary.domain.DiaryComment;
-import so.ego.re_darling.domains.diary.domain.DiaryCommentRepository;
-import so.ego.re_darling.domains.diary.domain.DiaryRepository;
+import so.ego.re_darling.domains.diary.domain.*;
 import so.ego.re_darling.domains.user.domain.Couple;
 import so.ego.re_darling.domains.user.domain.CoupleRepository;
 import so.ego.re_darling.domains.user.domain.User;
@@ -40,10 +39,10 @@ class DiaryUpdateControllerTest {
   @Autowired private CoupleRepository coupleRepository;
   @Autowired private DiaryRepository diaryRepository;
   @Autowired private DiaryCommentRepository diaryCommentRepository;
+  @Autowired private DiaryPlaceRepository diaryPlaceRepository;
 
-  @Test
-  void updateDiaryComment() throws Exception {
-
+  @BeforeEach
+  void setUp() {
     Couple couple = coupleRepository.save(Couple.builder().coupleToken("AAAAA").build());
     User user = userRepository.save(User.builder().couple(couple).socialToken("abc").build());
     userRepository.save(User.builder().couple(couple).socialToken("def").build());
@@ -53,13 +52,15 @@ class DiaryUpdateControllerTest {
 
     diaryCommentRepository.save(
         DiaryComment.builder().diary(diary).comment("여기 별로야").user(user).build());
+    diaryPlaceRepository.save(
+        DiaryPlace.builder().diary(diary).title("한강").comment("오늘 바람 많이 불었어...").build());
+  }
+
+  @Test
+  void updateDiaryComment() throws Exception {
 
     final DiaryUpdateRequest diaryUpdateRequest =
-        DiaryUpdateRequest.builder()
-            .diaryId(diary.getId())
-            .say("여기 좋았어")
-            .socialToken("abc")
-            .build();
+        DiaryUpdateRequest.builder().diaryId(1L).say("여기 좋았어").socialToken("abc").build();
 
     this.mockMvc
         .perform(
@@ -75,5 +76,33 @@ class DiaryUpdateControllerTest {
                     fieldWithPath("diaryId").description("다이어리 Index"),
                     fieldWithPath("say").description("다이어리 댓글"),
                     fieldWithPath("socialToken").description("소셜 토큰"))));
+  }
+
+  @Test
+  void updateDiaryPlace() throws Exception {
+
+    final DiaryPlaceUpdateRequest diaryPlaceUpdateRequest =
+        DiaryPlaceUpdateRequest.builder()
+            .placeId(1L)
+            .name("배곧 한울공원")
+            .comment("사람없어서 진짜 좋다")
+            .build();
+    this.mockMvc
+        .perform(
+            put("/diary/place")
+                .content(this.objectMapper.writeValueAsString(diaryPlaceUpdateRequest))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(
+            document(
+                "diary-place-update",
+                requestFields(
+                    fieldWithPath("placeId").description("장소 Index"),
+                    fieldWithPath("name").description("장소 이름"),
+                    fieldWithPath("comment").description("장소 설명"))));
+    DiaryPlace diaryPlace =
+            diaryPlaceRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException(""));
+    assertEquals(diaryPlace.getComment(), diaryPlaceUpdateRequest.getComment());
   }
 }
