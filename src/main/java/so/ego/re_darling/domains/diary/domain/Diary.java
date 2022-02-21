@@ -27,6 +27,9 @@ public class Diary extends BaseTimeEntity {
   @JoinColumn(name = "couple_id")
   private Couple couple;
 
+  @OneToMany private List<DiaryPlace> diaryPlaceList;
+  @OneToMany private List<DiaryComment> diaryCommentList;
+
   @Builder
   public Diary(LocalDateTime date, Couple couple) {
     this.date = date;

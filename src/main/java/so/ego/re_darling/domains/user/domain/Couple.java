@@ -17,7 +17,9 @@ public class Couple extends BaseTimeEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @NonNull
   private String coupleToken;
+  @NonNull
   private LocalDateTime firstDay;
 
   @Builder
