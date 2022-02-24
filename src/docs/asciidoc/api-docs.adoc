@@ -245,6 +245,39 @@ include::{snippets}/coupon-add/http-request.adoc[]
 ==== HTTP response
 include::{snippets}/coupon-add/http-response.adoc[]
 
+[[resources-post-create]]
+=== Coupon 조회 (사용)
+==== Request Fields
+include::{snippets}/coupon-find-used/path-parameters.adoc[]
+==== HTTP request
+include::{snippets}/coupon-find-used/http-request.adoc[]
+==== HTTP response
+include::{snippets}/coupon-find-used/http-response.adoc[]
+==== Response Fields
+include::{snippets}/coupon-find-used/response-body.adoc[]
+
+
+=== Coupon 조회 (미사용)
+==== Request Fields
+include::{snippets}/coupon-find-unUsed/path-parameters.adoc[]
+==== HTTP request
+include::{snippets}/coupon-find-unUsed/http-request.adoc[]
+==== HTTP response
+include::{snippets}/coupon-find-unUsed/http-response.adoc[]
+==== Response Fields
+include::{snippets}/coupon-find-unUsed/response-body.adoc[]
+
+=== Coupon 조회 (사용 - Preview)
+==== Request Fields
+include::{snippets}/coupon-find-limitUsed/path-parameters.adoc[]
+==== HTTP request
+include::{snippets}/coupon-find-limitUsed/http-request.adoc[]
+==== HTTP response
+include::{snippets}/coupon-find-limitUsed/http-response.adoc[]
+==== Response Fields
+include::{snippets}/coupon-find-limitUsed/response-body.adoc[]
+
+
 [[resources-post]]
 == Diary
 

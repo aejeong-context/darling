@@ -5,7 +5,9 @@ import so.ego.re_darling.domains.BaseTimeEntity;
 import so.ego.re_darling.domains.user.domain.User;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,19 +26,24 @@ public class Coupon extends BaseTimeEntity {
   @Enumerated(value = EnumType.STRING)
   private CouponStatus status;
 
-//  @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+  //  @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
   @ManyToOne
   @JoinColumn(name = "receiver_id")
   private User receiver;
 
-//  @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+  //  @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
   @ManyToOne
   @JoinColumn(name = "sender_id")
   private User sender;
 
   @Builder
-  public Coupon(@NonNull String title, String content, LocalDateTime useDate, CouponStatus status
-  ,User receiver,User sender) {
+  public Coupon(
+      @NonNull String title,
+      String content,
+      LocalDateTime useDate,
+      CouponStatus status,
+      User receiver,
+      User sender) {
     this.title = title;
     this.content = content;
     this.useDate = useDate;
@@ -44,4 +51,6 @@ public class Coupon extends BaseTimeEntity {
     this.receiver = receiver;
     this.sender = sender;
   }
+
+
 }
