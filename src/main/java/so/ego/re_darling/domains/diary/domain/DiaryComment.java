@@ -18,11 +18,11 @@ public class DiaryComment extends BaseTimeEntity {
 
   private String comment;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "diary_id")
   private Diary diary;
 

@@ -291,6 +291,14 @@ include::{snippets}/diary-place-update/http-request.adoc[]
 ==== HTTP response
 include::{snippets}/diary-place-update/http-response.adoc[]
 
+[[resources-post-create]]
+=== Diary 삭제
+==== Request Fields
+include::{snippets}/diary-delete/path-parameters.adoc[]
+include::{snippets}/diary-delete/http-request.adoc[]
+==== HTTP response
+include::{snippets}/diary-delete/http-response.adoc[]
+
 
 
 [[resources-post-create]]
@@ -304,5 +312,13 @@ include::{snippets}/diary-place-add/http-request.adoc[]
 include::{snippets}/diary-place-add/http-response.adoc[]
 
 
+[[resources-post-create]]
+=== Diary Place 삭제
+==== Request Fields
+include::{snippets}/diary-place-delete/path-parameters.adoc[]
+==== HTTP request
+include::{snippets}/diary-place-delete/http-request.adoc[]
+==== HTTP response
+include::{snippets}/diary-place-delete/http-response.adoc[]
 
 

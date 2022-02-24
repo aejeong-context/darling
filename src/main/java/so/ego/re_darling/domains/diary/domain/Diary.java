@@ -27,8 +27,8 @@ public class Diary extends BaseTimeEntity {
   @JoinColumn(name = "couple_id")
   private Couple couple;
 
-  @OneToMany private List<DiaryPlace> diaryPlaceList;
-  @OneToMany private List<DiaryComment> diaryCommentList;
+  @OneToMany(mappedBy = "diary",cascade = CascadeType.ALL) private List<DiaryPlace> diaryPlaceList;
+  @OneToMany(mappedBy = "diary",cascade = CascadeType.ALL) private List<DiaryComment> diaryCommentList;
 
   @Builder
   public Diary(LocalDateTime date, Couple couple) {

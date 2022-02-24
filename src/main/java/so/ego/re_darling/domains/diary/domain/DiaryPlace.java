@@ -18,7 +18,7 @@ public class DiaryPlace extends BaseTimeEntity {
   private String title;
   private String comment;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "diary_id")
   private Diary diary;
 

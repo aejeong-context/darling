@@ -63,7 +63,7 @@ public class DiaryFindService {
               .date(simpleDateFormat.format(java.sql.Timestamp.valueOf(diary.getDate())))
               .datingDate(
                   ChronoUnit.DAYS.between(firstDay, LocalDate.from(diary.getDate())) + 1 + "일")
-              .DiaryPlaceList(diaryPlaceList(diaryPlaceList))
+              .DiaryPlaceList(findPlaceList(diaryPlaceList))
               .diaryPlaceNames(
                   diaryPlaceList.stream()
                       .map(DiaryPlace::getTitle)
@@ -75,7 +75,12 @@ public class DiaryFindService {
     return diaryFindAllResponseList;
   }
 
-  public List<DiaryPlaceFindAllResponse> diaryPlaceList(List<DiaryPlace> diaryPlaceList) {
+  public List<DiaryPlaceFindAllResponse> findAllDiaryPlace(Long diaryId) {
+    List<DiaryPlace> diaryPlaceList = diaryPlaceRepository.findByDiaryId(diaryId);
+    return findPlaceList(diaryPlaceList);
+  }
+
+  public List<DiaryPlaceFindAllResponse> findPlaceList(List<DiaryPlace> diaryPlaceList) {
     List<DiaryPlaceFindAllResponse> diaryPlaceFindAllResponseList = new ArrayList<>();
     for (DiaryPlace place : diaryPlaceList) {
       diaryPlaceFindAllResponseList.add(
