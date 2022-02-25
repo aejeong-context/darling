@@ -21,11 +21,12 @@ public class DiaryDeleteService {
     diaryRepository.delete(diary);
   }
 
-  public void delDiaryPlace(Long diaryPlaceId) {
+  public Long delDiaryPlace(Long diaryPlaceId) {
     DiaryPlace diaryPlace =
         diaryPlaceRepository
             .findById(diaryPlaceId)
             .orElseThrow(() -> new IllegalArgumentException("Invalid DiaryPlace Index"));
     diaryPlaceRepository.delete(diaryPlace);
+    return diaryPlace.getId();
   }
 }

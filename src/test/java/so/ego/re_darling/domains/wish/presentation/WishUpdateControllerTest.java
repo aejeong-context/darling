@@ -1,22 +1,22 @@
 package so.ego.re_darling.domains.wish.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import so.ego.re_darling.domains.user.domain.User;
-import so.ego.re_darling.domains.user.domain.UserRepository;
+import so.ego.re_darling.domains.wish.application.WishUpdateService;
 import so.ego.re_darling.domains.wish.application.dto.WishListRequest;
 import so.ego.re_darling.domains.wish.domain.Wish;
-import so.ego.re_darling.domains.wish.domain.WishRepository;
 import so.ego.re_darling.domains.wish.domain.WishStatus;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.time.LocalDateTime;
+
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -28,28 +28,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-@SpringBootTest
+@WebMvcTest(WishUpdateController.class)
 class WishUpdateControllerTest {
   @Autowired private MockMvc mockMvc;
 
-  @Autowired private UserRepository userRepository;
-
-  @Autowired private WishRepository wishRepository;
-
   @Autowired protected ObjectMapper objectMapper;
 
-  @BeforeEach
-  void setUp() {
-    userRepository.save(User.builder().socialToken("abc").build());
-    wishRepository.save(Wish.builder().content("바다가기").status(WishStatus.INCOMPLETE).build());
-  }
+  @MockBean private WishUpdateService wishUpdateService;
 
   @Test
   void updateComplete() throws Exception {
 
+    // given
+    given(wishUpdateService.stateUpdate("abc", 1L)).willReturn(1L);
+
+    // when
+    Wish wish = Wish.builder().build();
+    wish.updateStatus(LocalDateTime.now(), WishStatus.COMPLETE);
+
     this.mockMvc
         .perform(
-            put("/wishlist/{socialToken}/{wishListId}", "abc", "1")
+            put("/wishlist/{socialToken}/{wishListId}", "abc", 1L)
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andDo(print())
@@ -63,8 +62,11 @@ class WishUpdateControllerTest {
 
   @Test
   void deleteStatus() throws Exception {
+    // given
+    given(wishUpdateService.delWish(1L)).willReturn(1L);
+
     this.mockMvc
-        .perform(put("/wishlist/delete/{wishListId}", "1").accept(MediaType.APPLICATION_JSON))
+        .perform(put("/wishlist/delete/{wishListId}", 1L).accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(
@@ -76,6 +78,7 @@ class WishUpdateControllerTest {
   @Test
   void updateContent() throws Exception {
 
+    // given
     final WishListRequest wishListRequest =
         WishListRequest.builder()
             .wishId(1L)
@@ -83,6 +86,12 @@ class WishUpdateControllerTest {
             .wishStatus(WishStatus.COMPLETE)
             .socialToken("abc")
             .build();
+
+    given(wishUpdateService.modifyContent(wishListRequest)).willReturn(1L);
+
+    // when
+    Wish wish = Wish.builder().build();
+    wish.updateContent("문학산 가기");
 
     this.mockMvc
         .perform(

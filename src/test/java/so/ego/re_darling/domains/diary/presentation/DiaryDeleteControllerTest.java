@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import so.ego.re_darling.domains.diary.application.DiaryDeleteService;
 import so.ego.re_darling.domains.diary.domain.*;
 import so.ego.re_darling.domains.user.domain.Couple;
 import so.ego.re_darling.domains.user.domain.CoupleRepository;
@@ -15,7 +17,7 @@ import so.ego.re_darling.domains.user.domain.UserRepository;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -33,6 +35,8 @@ class DiaryDeleteControllerTest {
   @Autowired private DiaryRepository diaryRepository;
   @Autowired private DiaryCommentRepository diaryCommentRepository;
   @Autowired private DiaryPlaceRepository diaryPlaceRepository;
+
+  @MockBean private DiaryDeleteService diaryDeleteService;
 
   @BeforeEach
   void setUp() {
@@ -62,6 +66,9 @@ class DiaryDeleteControllerTest {
 
   @Test
   void 다이어리_장소_삭제() throws Exception {
+
+    given(diaryDeleteService.delDiaryPlace(1L)).willReturn(1L);
+
     this.mockMvc
         .perform(delete("/diary/place/{diaryPlaceId}", 1L))
         .andExpect(status().isOk())

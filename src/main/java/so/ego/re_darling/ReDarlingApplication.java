@@ -4,12 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@EnableJpaAuditing
 @SpringBootApplication
 public class ReDarlingApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ReDarlingApplication.class, args);
-    }
-
+  public static void main(String[] args) {
+    SpringApplication.run(ReDarlingApplication.class, args);
+  }
 }

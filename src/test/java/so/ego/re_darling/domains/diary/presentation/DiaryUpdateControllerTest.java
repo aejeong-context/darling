@@ -1,25 +1,19 @@
 package so.ego.re_darling.domains.diary.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import so.ego.re_darling.domains.diary.application.DiaryUpdateService;
 import so.ego.re_darling.domains.diary.application.dto.DiaryPlaceUpdateRequest;
 import so.ego.re_darling.domains.diary.application.dto.DiaryUpdateRequest;
-import so.ego.re_darling.domains.diary.domain.*;
-import so.ego.re_darling.domains.user.domain.Couple;
-import so.ego.re_darling.domains.user.domain.CoupleRepository;
-import so.ego.re_darling.domains.user.domain.User;
-import so.ego.re_darling.domains.user.domain.UserRepository;
 
-import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -29,38 +23,44 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-@SpringBootTest
+//@SpringBootTest
+  @WebMvcTest(DiaryUpdateController.class)
 class DiaryUpdateControllerTest {
 
   @Autowired private MockMvc mockMvc;
   @Autowired private ObjectMapper objectMapper;
 
-  @Autowired private UserRepository userRepository;
-  @Autowired private CoupleRepository coupleRepository;
-  @Autowired private DiaryRepository diaryRepository;
-  @Autowired private DiaryCommentRepository diaryCommentRepository;
-  @Autowired private DiaryPlaceRepository diaryPlaceRepository;
+//  @Autowired private UserRepository userRepository;
+//  @Autowired private CoupleRepository coupleRepository;
+//  @Autowired private DiaryRepository diaryRepository;
+//  @Autowired private DiaryCommentRepository diaryCommentRepository;
+//  @Autowired private DiaryPlaceRepository diaryPlaceRepository;
+//
+//  @BeforeEach
+//  void setUp() {
+//    Couple couple = coupleRepository.save(Couple.builder().coupleToken("AAAAA").build());
+//    User user = userRepository.save(User.builder().couple(couple).socialToken("abc").build());
+//    userRepository.save(User.builder().couple(couple).socialToken("def").build());
+//
+//    Diary diary =
+//        diaryRepository.save(Diary.builder().couple(couple).date(LocalDateTime.now()).build());
+//
+//    diaryCommentRepository.save(
+//        DiaryComment.builder().diary(diary).comment("여기 별로야").user(user).build());
+//    diaryPlaceRepository.save(
+//        DiaryPlace.builder().diary(diary).title("한강").comment("오늘 바람 많이 불었어...").build());
+//  }
 
-  @BeforeEach
-  void setUp() {
-    Couple couple = coupleRepository.save(Couple.builder().coupleToken("AAAAA").build());
-    User user = userRepository.save(User.builder().couple(couple).socialToken("abc").build());
-    userRepository.save(User.builder().couple(couple).socialToken("def").build());
-
-    Diary diary =
-        diaryRepository.save(Diary.builder().couple(couple).date(LocalDateTime.now()).build());
-
-    diaryCommentRepository.save(
-        DiaryComment.builder().diary(diary).comment("여기 별로야").user(user).build());
-    diaryPlaceRepository.save(
-        DiaryPlace.builder().diary(diary).title("한강").comment("오늘 바람 많이 불었어...").build());
-  }
+  @MockBean
+  DiaryUpdateService diaryUpdateService;
 
   @Test
   void updateDiaryComment() throws Exception {
 
     final DiaryUpdateRequest diaryUpdateRequest =
         DiaryUpdateRequest.builder().diaryId(1L).say("여기 좋았어").socialToken("abc").build();
+
+    given(diaryUpdateService.updateDiaryComment(diaryUpdateRequest)).willReturn(1L);
 
     this.mockMvc
         .perform(
@@ -87,6 +87,9 @@ class DiaryUpdateControllerTest {
             .name("배곧 한울공원")
             .comment("사람없어서 진짜 좋다")
             .build();
+
+    given(diaryUpdateService.updateDiaryPlace(diaryPlaceUpdateRequest)).willReturn(1L);
+
     this.mockMvc
         .perform(
             put("/diary/place")
@@ -101,8 +104,6 @@ class DiaryUpdateControllerTest {
                     fieldWithPath("placeId").description("장소 Index"),
                     fieldWithPath("name").description("장소 이름"),
                     fieldWithPath("comment").description("장소 설명"))));
-    DiaryPlace diaryPlace =
-            diaryPlaceRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException(""));
-    assertEquals(diaryPlace.getComment(), diaryPlaceUpdateRequest.getComment());
+
   }
 }

@@ -2,10 +2,8 @@ package so.ego.re_darling.domains.user.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import so.ego.re_darling.domains.user.application.dto.UserRegisterRequest;
-import so.ego.re_darling.domains.user.application.dto.UserRegisterResponse;
-import so.ego.re_darling.domains.user.domain.*;
+import so.ego.re_darling.domains.user.domain.User;
+import so.ego.re_darling.domains.user.domain.UserRepository;
 
 import java.time.LocalDateTime;
 
@@ -15,15 +13,15 @@ public class UserRegisterService {
 
   private final UserRepository userRepository;
 
-  public UserRegisterResponse addUser(UserRegisterRequest userRegisterRequest) {
+  public Long addUser(String socialToken) {
     User user =
         userRepository.save(
             User.builder()
-                .socialToken(userRegisterRequest.getSocialToken())
+                .socialToken(socialToken)
                 .nickname("미설정")
                 .birthday(LocalDateTime.now())
-                .statusMessage("")
+                .statusMessage(" ")
                 .build());
-    return UserRegisterResponse.builder().id(user.getId()).build();
+    return user.getId();
   }
 }

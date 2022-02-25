@@ -21,7 +21,7 @@ public class WishUpdateService {
   private final UserRepository userRepository;
 
   @Transactional
-  public void stateUpdate(String socialToken, Long wishListId) {
+  public Long stateUpdate(String socialToken, Long wishListId) {
 
     userRepository
         .findBySocialToken(socialToken)
@@ -34,29 +34,28 @@ public class WishUpdateService {
 
     wish.updateStatus(LocalDateTime.now(), WishStatus.COMPLETE);
 
-
+    return wish.getId();
   }
 
   @Transactional
-  public void delWish(Long wishListId) {
+  public Long delWish(Long wishListId) {
 
     Wish wish =
         wishRepository
             .findById(wishListId)
             .orElseThrow(() -> new IllegalArgumentException("Invalid wish Index"));
     wish.updateStatus(WishStatus.DELETE);
-
+    return wish.getId();
   }
 
   @Transactional
-  public void modifyContent(WishListRequest wishListRequest) {
+  public Long modifyContent(WishListRequest wishListRequest) {
     Wish wishList =
         wishRepository
             .findById(wishListRequest.getWishId())
             .orElseThrow(() -> new IllegalArgumentException("Invalid Wish Index"));
 
     wishList.updateContent(wishList.getContent());
-
-
+    return wishList.getId();
   }
 }

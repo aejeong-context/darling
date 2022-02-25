@@ -1,62 +1,44 @@
 package so.ego.re_darling.domains.diary.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.logging.log4j.message.ObjectMessage;
 import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
+import so.ego.re_darling.domains.diary.application.DiaryRegisterService;
 import so.ego.re_darling.domains.diary.application.dto.DiaryPlaceRegisterRequest;
 import so.ego.re_darling.domains.diary.application.dto.DiaryRegisterRequest;
-import so.ego.re_darling.domains.diary.domain.Diary;
-import so.ego.re_darling.domains.diary.domain.DiaryRepository;
-import so.ego.re_darling.domains.user.domain.Couple;
-import so.ego.re_darling.domains.user.domain.CoupleRepository;
-import so.ego.re_darling.domains.user.domain.User;
-import so.ego.re_darling.domains.user.domain.UserRepository;
-import so.ego.re_darling.domains.wish.domain.Wish;
-import so.ego.re_darling.domains.wish.domain.WishStatus;
+import so.ego.re_darling.domains.diary.application.dto.DiaryRegisterResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-@SpringBootTest
+@WebMvcTest(DiaryRegisterController.class)
 class DiaryRegisterControllerTest {
 
   @Autowired private MockMvc mockMvc;
   @Autowired private ObjectMapper objectMapper;
 
-  @Autowired private UserRepository userRepository;
-  @Autowired private CoupleRepository coupleRepository;
-  @Autowired private DiaryRepository diaryRepository;
-
-  @BeforeEach
-  void setup() {
-    Couple couple = coupleRepository.save(Couple.builder().coupleToken("AAAAA").build());
-    userRepository.save(User.builder().socialToken("abc").couple(couple).build());
-    userRepository.save(User.builder().socialToken("def").couple(couple).build());
-    diaryRepository.save(Diary.builder().couple(couple).date(LocalDateTime.now()).build());
-  }
+  @MockBean private DiaryRegisterService diaryRegisterService;
 
   @Test
   void registerDiary() throws Exception {
 
+    // given
     final DiaryRegisterRequest diaryRegisterRequest =
         DiaryRegisterRequest.builder()
             .date(LocalDateTime.now())
@@ -64,7 +46,13 @@ class DiaryRegisterControllerTest {
             .socialToken("abc")
             .say(" ")
             .build();
-    mockMvc
+
+    final DiaryRegisterResponse diaryRegisterResponse =
+        DiaryRegisterResponse.builder().diaryId(1L).build();
+
+    given(diaryRegisterService.addDiary(diaryRegisterRequest)).willReturn(diaryRegisterResponse);
+
+    this.mockMvc
         .perform(
             post("/diary")
                 .content(this.objectMapper.writeValueAsString(diaryRegisterRequest))
@@ -91,12 +79,17 @@ class DiaryRegisterControllerTest {
                 .comment("여기 맛있어")
                 .name("송리단길 맛집")
                 .build());
+
+    // when
+    diaryRegisterService.addDiaryPlaces(diaryPlaceRegisterRequest);
+
     mockMvc
         .perform(
             post("/diary/places")
                 .content(this.objectMapper.writeValueAsString(diaryPlaceRegisterRequest))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated())
+        .andDo(print())
         .andDo(
             document(
                 "diary-place-add",

@@ -16,11 +16,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import so.ego.re_darling.domains.user.application.UserRegisterService;
 import so.ego.re_darling.domains.user.application.UserUpdateService;
-import so.ego.re_darling.domains.user.application.dto.*;
+import so.ego.re_darling.domains.user.application.dto.UserBirthdayUpdateRequest;
+import so.ego.re_darling.domains.user.application.dto.UserConnectRequest;
+import so.ego.re_darling.domains.user.application.dto.UserMessageUpdateRequest;
+import so.ego.re_darling.domains.user.application.dto.UserNickNameUpdateRequest;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -57,11 +59,9 @@ class UserUpdateControllerTest {
   void connectUser() throws Exception {
     final UserConnectRequest userConnectRequest =
         UserConnectRequest.builder().coupleCode("AEJEONG").socialToken("abc").build();
-    final UserRegisterResponse user = UserRegisterResponse.builder().id(1L).build();
-    final UserRegisterResponse partner = UserRegisterResponse.builder().id(2L).build();
 
-    when(userRegisterService.addUser(any())).thenReturn(user);
-    when(userRegisterService.addUser(any())).thenReturn(partner);
+    when(userRegisterService.addUser(any())).thenReturn(1L);
+    when(userRegisterService.addUser(any())).thenReturn(2L);
 
     when(userUpdateService.connectUser(userConnectRequest)).thenReturn(ResponseEntity.ok().build());
 

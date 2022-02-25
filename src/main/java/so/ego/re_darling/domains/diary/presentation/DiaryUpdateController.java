@@ -10,10 +10,6 @@ import so.ego.re_darling.domains.diary.application.DiaryUpdateService;
 import so.ego.re_darling.domains.diary.application.dto.DiaryPlaceUpdateRequest;
 import so.ego.re_darling.domains.diary.application.dto.DiaryUpdateRequest;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
 @RequiredArgsConstructor
 @RestController
 public class DiaryUpdateController {
@@ -22,7 +18,7 @@ public class DiaryUpdateController {
   @PutMapping("/diary")
   public ResponseEntity<String> updateDiaryComment(
       @RequestBody DiaryUpdateRequest diaryUpdateRequest) {
-    Map<Long, String> updateDiaryIndex = diaryUpdateService.updateDiaryComment(diaryUpdateRequest);
+    Long updateDiaryIndex = diaryUpdateService.updateDiaryComment(diaryUpdateRequest);
     return new ResponseEntity<>("Index [ " + updateDiaryIndex + " ] is updated", HttpStatus.OK);
   }
 

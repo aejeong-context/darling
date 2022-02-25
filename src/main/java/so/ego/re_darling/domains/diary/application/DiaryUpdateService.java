@@ -4,14 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import so.ego.re_darling.domains.diary.application.dto.DiaryPlaceUpdateRequest;
-import so.ego.re_darling.domains.diary.application.dto.DiaryRegisterRequest;
 import so.ego.re_darling.domains.diary.application.dto.DiaryUpdateRequest;
 import so.ego.re_darling.domains.diary.domain.*;
 import so.ego.re_darling.domains.user.domain.User;
 import so.ego.re_darling.domains.user.domain.UserRepository;
-
-import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -22,7 +18,7 @@ public class DiaryUpdateService {
   private final DiaryCommentRepository diaryCommentRepository;
   private final DiaryPlaceRepository diaryPlaceRepository;
 
-  public Map<Long, String> updateDiaryComment(DiaryUpdateRequest diaryUpdateRequest) {
+  public Long updateDiaryComment(DiaryUpdateRequest diaryUpdateRequest) {
     User user =
         userRepository
             .findBySocialToken(diaryUpdateRequest.getSocialToken())
@@ -47,7 +43,7 @@ public class DiaryUpdateService {
 
     diaryComment.updateComment(diaryUpdateRequest.getSay());
 
-    return Map.of(diaryComment.getId(), diaryComment.getComment());
+    return diaryComment.getId();
   }
 
   @Transactional
