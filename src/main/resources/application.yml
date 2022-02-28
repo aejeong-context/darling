@@ -1,0 +1,30 @@
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+
+
+jasypt:
+  encryptor:
+    property:
+      prefix: ENC(
+      suffix: )
+    algorithm: PBEWithMD5AndDES
+
+
+aws:
+  s3:
+    ACCESS_KEY: ENC(a6bBmW0W9z9jvySIEelYFBlcg0foB0deyVFu3SUYm1w=)
+    SECRET_KEY: ENC(TEvsgQb83cnNCYHvSYIFUI46SqOUCYIWDAyLGEuaTR2Hs5F+BG4lAnPhFPo5dCf0pJxNIoFdfSA=)
