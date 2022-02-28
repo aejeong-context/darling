@@ -18,10 +18,6 @@ public class AmazonConfig {
   @Value("${aws.s3.SECRET_KEY}")
   private String secretKey;
 
-  private final String BUCKET_NAME = "ego-workspace-fileserver";
-
-  private final String BUCKET = "https://ego-workspace-fileserver.s3-ap-northeast-2.amazonaws.com/";
-
   @Bean
   public AmazonS3 s3() {
     AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);

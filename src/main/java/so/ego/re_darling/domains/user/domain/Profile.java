@@ -21,7 +21,12 @@ public class Profile extends BaseTimeEntity {
     private User user;
 
     @Builder
-    public Profile(String path) {
+    public Profile(String path,User user) {
+        this.path = path;
+        this.user = user;
+    }
+
+    public void updatePath(String path){
         this.path = path;
     }
 }
