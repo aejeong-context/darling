@@ -5,9 +5,7 @@ import so.ego.re_darling.domains.BaseTimeEntity;
 import so.ego.re_darling.domains.user.domain.User;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -52,5 +50,8 @@ public class Coupon extends BaseTimeEntity {
     this.sender = sender;
   }
 
-
+  public void updateStatus(LocalDateTime useDate, CouponStatus status) {
+    this.useDate = useDate;
+    this.status = status;
+  }
 }

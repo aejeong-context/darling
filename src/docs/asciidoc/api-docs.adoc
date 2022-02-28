@@ -277,6 +277,17 @@ include::{snippets}/coupon-find-limitUsed/http-response.adoc[]
 ==== Response Fields
 include::{snippets}/coupon-find-limitUsed/response-body.adoc[]
 
+=== Coupon 수정
+==== Request Fields
+include::{snippets}/coupon-status-use/path-parameters.adoc[]
+==== HTTP request
+include::{snippets}/coupon-status-use/http-request.adoc[]
+==== HTTP response
+include::{snippets}/coupon-status-use/http-response.adoc[]
+==== Response Fields
+include::{snippets}/coupon-status-use/response-body.adoc[]
+
+
 
 [[resources-post]]
 == Diary
